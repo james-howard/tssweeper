@@ -32,4 +32,13 @@ it('calculates adjacency 3x3 center', () => {
             expect(b.adjacentMineCount(x, y)).toBe(1);
         }
     }
-})
+});
+
+it('calculates 3x3 adjacency 8 mines', () => {
+    let b = Game.Board.fromPattern([
+        "***",
+        "* *",
+        "***"
+    ]);
+    expect(b.adjacentMineCount(1, 1)).toBe(8);
+});
