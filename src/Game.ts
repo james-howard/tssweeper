@@ -49,9 +49,7 @@ class Board {
     static fromPattern(rows: string[]) {
         let width = rows[0].length;
         let height = rows.length;
-        let mineCount = rows.join('').split('').reduce((sum, ch) => {
-            return sum + ch === '*' ? 1 : 0;
-        }, 0);
+        let mineCount = rows.join('').split('').reduce((sum, ch) => sum + (ch === '*' ? 1 : 0), 0);
 
         let board = new Board(width, height, mineCount);
 
@@ -74,7 +72,7 @@ class Board {
                 return this.cells[i];
             }
             let count = this.adjacents(x, y).reduce((sum, [x1, y1]) => {
-                let j = this.cellIndex(x, y);
+                let j = this.cellIndex(x1, y1);
                 if (this.cells[j] & Cell.MINED) {
                     return sum + 1;
                 } else {
