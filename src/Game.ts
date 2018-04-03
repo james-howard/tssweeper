@@ -129,7 +129,7 @@ class Board {
     private _reveal(x:number, y:number, visited:Set<number>) {
         let i = this.cellIndex(x, y);
         let c = this.cells[i];
-        if (!(visited.has(i) || c & Cell.FLAGGED /* can't reveal something while it is flagged */ || c && Cell.REVEALED)) {
+        if (!(visited.has(i) || c & Cell.FLAGGED /* can't reveal something while it is flagged */ || c & Cell.REVEALED)) {
             c |= Cell.REVEALED
 
             this.cells[i] = c;
@@ -197,7 +197,7 @@ class Board {
             this.state = GameState.LOST;
         } else if (mines == flaggedCorrectly) {
             this.state = GameState.WON; // win condition 1
-        } else if (flaggedIncorrectly == 0 && revealed + flaggedCorrectly >= mines) {
+        } else if (flaggedIncorrectly == 0 && this.cells.length - revealed == mines) {
             this.state = GameState.WON; // win condition 2
         } else {
             this.state = GameState.IN_PROGRESS;
