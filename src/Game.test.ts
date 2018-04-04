@@ -1,4 +1,4 @@
-import * as Game from './Game'
+import * as Game from './Game';
 
 // *** Adjacency Count Tests ***
 
@@ -55,7 +55,7 @@ it('wins 3x3 game via flag', () => {
     ]);
     expect(b.state).toBe(Game.GameState.IN_PROGRESS);
     let c = b.flag(1, 1);
-    expect((c & Game.Cell.FLAGGED) != 0).toBe(true);
+    expect((c & Game.Cell.FLAGGED) !== 0).toBe(true);
     expect(b.state).toBe(Game.GameState.WON);
 });
 
@@ -68,10 +68,10 @@ it('wins 3x3 game via reveal', () => {
     expect(b.state).toBe(Game.GameState.IN_PROGRESS);
     for (let y = 0; y < 3; y++) {
         for (let x = 0; x < 3; x++) {
-            if (x === 1 && y === 1) continue;
+            if (x === 1 && y === 1) { continue; }
             expect(b.state).toBe(Game.GameState.IN_PROGRESS);
             let c = b.reveal(x, y);
-            expect((c & Game.Cell.REVEALED) != 0).toBe(true);
+            expect((c & Game.Cell.REVEALED) !== 0).toBe(true);
         }
     }
     expect(b.state).toBe(Game.GameState.WON);
@@ -112,10 +112,10 @@ it('reveals empty cells recursively', () => {
         for (let x = 0; x < 5; x++) {
             let c = b.cellAt(x, y);
             if (x === 2 && y === 2) {
-                expect((c & Game.Cell.MINED) != 0).toBe(true);
-                expect((c & Game.Cell.REVEALED) == 0).toBe(true);
+                expect((c & Game.Cell.MINED) !== 0).toBe(true);
+                expect((c & Game.Cell.REVEALED) === 0).toBe(true);
             } else {
-                expect((c & Game.Cell.REVEALED) != 0).toBe(true);
+                expect((c & Game.Cell.REVEALED) !== 0).toBe(true);
             }
         }
     }

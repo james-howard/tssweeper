@@ -24,27 +24,9 @@ enum GameState {
 }
 
 class Board {
-    cells: Cell[]
-    state: GameState = GameState.IN_PROGRESS
-    flagCount: number
-    
-    constructor(public width: number, public height: number, public mineCount: number) {
-        const length = width * height;
-        let mines = this.mineCount = Math.min(length, mineCount);
-        // initialize cells as either empty or mined according to the number of mines requested
-        let cells = this.cells = new Array<Cell>(width*height);
-        cells.fill(Cell.MINED, 0, mines);
-        cells.fill(Cell.EMPTY, mines, cells.length);
-        // shuffle cells so that the mines are evenly distributed
-        for (let i = cells.length-1; i > 0; i--) {
-            let j = Math.floor(Math.random() * (i+1)); // j in range [0, i]
-            // swap cells[i], cells[j]
-            let tmp = cells[i];
-            cells[i] = cells[j];
-            cells[j] = tmp;
-        }
-        this.calculateAdjacency();
-    }
+    cells: Cell[];
+    state: GameState = GameState.IN_PROGRESS;
+    flagCount: number;
 
     static fromPattern(rows: string[]) {
         let width = rows[0].length;
@@ -64,9 +46,27 @@ class Board {
 
         return board;
     }
+    
+    constructor(public width: number, public height: number, public mineCount: number) {
+        const length = width * height;
+        let mines = this.mineCount = Math.min(length, mineCount);
+        // initialize cells as either empty or mined according to the number of mines requested
+        let cells = this.cells = new Array<Cell>(width*height);
+        cells.fill(Cell.MINED, 0, mines);
+        cells.fill(Cell.EMPTY, mines, cells.length);
+        // shuffle cells so that the mines are evenly distributed
+        for (let i = cells.length-1; i > 0; i--) {
+            let j = Math.floor(Math.random() * (i+1)); // j in range [0, i]
+            // swap cells[i], cells[j]
+            let tmp = cells[i];
+            cells[i] = cells[j];
+            cells[j] = tmp;
+        }
+        this.calculateAdjacency();
+    }
 
     private calculateAdjacency() {
-        let countAdjacents = (x:number, y:number) : Cell => {
+        let countAdjacents = (x:number, y:number): Cell => {
             let i = x + y * this.width;
             if (this.cells[i] & Cell.MINED) {
                 return this.cells[i];
@@ -80,28 +80,28 @@ class Board {
                 }
             }, 0);
             return 1 << count;
-        }
+        };
         for (let y = 0; y < this.height; y++) {
             for (let x = 0; x < this.width; x++) {
-                this.cells[this.cellIndex(x,y)] = countAdjacents(x, y)
+                this.cells[this.cellIndex(x,y)] = countAdjacents(x, y);
             }
         }
     }
 
-    private cellIndex(x:number, y:number) : number {
+    private cellIndex(x:number, y:number): number {
         return x + y * this.width;
     }
 
-    cellAt(x:number, y:number) : Cell {
+    cellAt(x:number, y:number): Cell {
         return this.cells[this.cellIndex(x,y)];
     }
 
     // return valid coordinates of adjacent cells, taking into account the board boundaries.
-    adjacents(x:number, y:number) : [number, number][] {
+    adjacents(x:number, y:number): [number, number][] {
         let result = new Array<[number, number]>();
         for (let dy = -1; dy <= 1; dy++) {
             for (let dx = -1; dx <= 1; dx++) {
-                if (dy == 0 && dx == 0) {
+                if (dy === 0 && dx === 0) {
                     continue; // skip center
                 }
                 let x1 = x + dx;
@@ -115,13 +115,15 @@ class Board {
         return result;
     }
 
-    adjacentMineCount(x:number, y:number) : number {
+    adjacentMineCount(x:number, y:number): number {
         // returns the number of adjacent mines to the cell at x, y, or 9 if cell is a mine
-        let c = this.cellAt(x, y)
+        let c = this.cellAt(x, y);
         // log2 implementation specialized to our usage ...
         // it's equivalent to Math.log2(c & 0xF)
         for (var p = 0; p <= 9; p++) {
-            if (c & (1 << p)) return p;
+            if (c & (1 << p)) {
+                return p;
+            }
         }
         throw new Error("Corrupt board state");
     }
@@ -129,15 +131,15 @@ class Board {
     private _reveal(x:number, y:number) {
         let i = this.cellIndex(x, y);
         let c = this.cells[i];
-        if ((c & Cell.FLAGGED) == 0  /* can't reveal something while it is flagged */ && (c & Cell.REVEALED) == 0) {
-            c |= Cell.REVEALED
+        if ((c & Cell.FLAGGED) === 0  /* can't reveal something while it is flagged */ && (c & Cell.REVEALED) === 0) {
+            c |= Cell.REVEALED;
 
             this.cells[i] = c;
 
             if (c & Cell.EMPTY) {
                 this.adjacents(x, y).forEach(([x1, y1]) => {
                     let adj = this.cellAt(x1, y1);
-                    if ((adj & Cell.MINED) == 0) {
+                    if ((adj & Cell.MINED) === 0) {
                         this._reveal(x1, y1);
                     }
                 });
@@ -196,9 +198,9 @@ class Board {
         // 2. Reveal all cells which are not mines
         if (triggered > 0) {
             this.state = GameState.LOST;
-        } else if (mines == flaggedCorrectly) {
+        } else if (mines === flaggedCorrectly) {
             this.state = GameState.WON; // win condition 1
-        } else if (flaggedIncorrectly == 0 && this.cells.length - revealed == mines) {
+        } else if (flaggedIncorrectly === 0 && this.cells.length - revealed === mines) {
             this.state = GameState.WON; // win condition 2
         } else {
             this.state = GameState.IN_PROGRESS;
@@ -206,5 +208,4 @@ class Board {
     }
 }
 
-export { Board, GameState, Cell};
-
+export { Board, GameState, Cell };
