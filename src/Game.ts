@@ -106,7 +106,7 @@ class Board {
                 }
                 let x1 = x + dx;
                 let y1 = y + dy;
-                if (x1 < 0 || x >= this.width || y1 < 0 || y >= this.height) {
+                if (x1 < 0 || x1 >= this.width || y1 < 0 || y1 >= this.height) {
                     continue; // skip out of bounds
                 }
                 result.push([x1, y1]);
@@ -126,19 +126,20 @@ class Board {
         throw new Error("Corrupt board state");
     }
 
-    private _reveal(x:number, y:number, visited:Set<number>) {
+    private _reveal(x:number, y:number) {
         let i = this.cellIndex(x, y);
         let c = this.cells[i];
-        if (!(visited.has(i) || c & Cell.FLAGGED /* can't reveal something while it is flagged */ || c & Cell.REVEALED)) {
+        if ((c & Cell.FLAGGED) == 0  /* can't reveal something while it is flagged */ && (c & Cell.REVEALED) == 0) {
             c |= Cell.REVEALED
 
             this.cells[i] = c;
 
             if (c & Cell.EMPTY) {
-                visited.add(i);
-                // in this case where there are no immediately adjacent mines, reveal all of the adjacent cells recursively
                 this.adjacents(x, y).forEach(([x1, y1]) => {
-                    this._reveal(x1, y1, visited);
+                    let adj = this.cellAt(x1, y1);
+                    if ((adj & Cell.MINED) == 0) {
+                        this._reveal(x1, y1);
+                    }
                 });
             }
         }
@@ -147,7 +148,7 @@ class Board {
     }
 
     reveal(x:number, y:number) {
-        let c = this._reveal(x, y, new Set<number>());
+        let c = this._reveal(x, y);
         this.updateState();
         return c;
     }
