@@ -1,11 +1,9 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import App from './App';
-import registerServiceWorker from './registerServiceWorker';
+import GameUI from './UI';
 import './index.css';
 
 ReactDOM.render(
-  <App />,
+  <GameUI />,
   document.getElementById('root') as HTMLElement
 );
-registerServiceWorker();
