@@ -5,6 +5,7 @@ import * as Game from '../Game';
 
 import { BoardUI, BoardUIProps } from './BoardUI';
 import { StatusUI, StatusUIProps } from './StatusUI';
+import { BoardSizeUI, BoardSizeUIProps } from './BoardSizeUI';
 
 interface GameUIProps extends BoardUIProps {
     start: number;
@@ -32,13 +33,19 @@ class GameUI extends React.Component<GameUIProps> {
             onToggleFlag: this.props.onToggleFlag,
             onReveal: this.props.onReveal
         };
+        let sizeProps:BoardSizeUIProps = {
+            width: this.props.board.width,
+            height: this.props.board.height,
+            onReinitialize: this.props.onReinitialize
+        };
         let containerStyle:React.CSSProperties = {
             width: BoardUI.pixelWidthFromBoardWidth(board.width) + 'px',
             border: '1px solid #333'
         };
         return h('div', {style:containerStyle},
             h(StatusUI, statusProps),
-            h(BoardUI, boardProps)
+            h(BoardUI, boardProps),
+            h(BoardSizeUI, sizeProps)
         );
     }
 }

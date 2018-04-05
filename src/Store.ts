@@ -86,7 +86,7 @@ function gameReducer(state:GameStore, rawEvent:GameEvent): GameStore {
             });
         }
         default:
-            return { board: new Game.Board(10, 10, 10), start: 0, duration: 0 };
+            return { board: new Game.Board(6, 6, 5), start: 0, duration: 0 };
     }
 }
 
