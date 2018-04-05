@@ -38,7 +38,7 @@ enum GameState {
 class Board {
     cells: Cell[];
     state: GameState = GameState.IN_PROGRESS;
-    flagCount: number;
+    flagCount: number = 0;
 
     static fromPattern(rows: string[]) {
         let width = rows[0].length;
@@ -75,6 +75,17 @@ class Board {
             cells[j] = tmp;
         }
         this.calculateAdjacency();
+    }
+
+    clone() {
+        let clone = new Board(0, 0, 0);
+        clone.cells = Array.from(this.cells);
+        clone.width = this.width;
+        clone.height = this.height;
+        clone.mineCount = this.mineCount;
+        clone.state = this.state;
+        clone.flagCount = this.flagCount;
+        return clone;
     }
 
     private calculateAdjacency() {
@@ -208,6 +219,8 @@ class Board {
         } else {
             this.state = GameState.IN_PROGRESS;
         }
+
+        this.flagCount = flaggedCorrectly + flaggedIncorrectly;
     }
 }
 
