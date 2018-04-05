@@ -74,4 +74,4 @@ function gameReducer(state:GameStore, rawEvent:GameEvent): GameStore {
 
 let store = Redux.createStore(gameReducer);
 
-export { store, InitializeEvent, ToggleFlagEvent, RevealEvent };
+export { store, GameStore, GameEvent, InitializeEvent, ToggleFlagEvent, RevealEvent };

@@ -54,7 +54,7 @@ it('wins 3x3 game via flag', () => {
         "   "
     ]);
     expect(b.state).toBe(Game.GameState.IN_PROGRESS);
-    let c = b.toggleFlag(1, 1);
+    let c = b.toggleFlag(1, 1).cellAt(1, 1);
     expect((c & Game.Cell.FLAGGED) !== 0).toBe(true);
     expect(b.state).toBe(Game.GameState.WON);
 });
@@ -70,7 +70,7 @@ it('wins 3x3 game via reveal', () => {
         for (let x = 0; x < 3; x++) {
             if (x === 1 && y === 1) { continue; }
             expect(b.state).toBe(Game.GameState.IN_PROGRESS);
-            let c = b.reveal(x, y);
+            let c = b.reveal(x, y).cellAt(x, y);
             expect((c & Game.Cell.REVEALED) !== 0).toBe(true);
         }
     }

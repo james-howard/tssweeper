@@ -164,21 +164,21 @@ class Board {
     }
 
     reveal(x:number, y:number) {
-        let c = this._reveal(x, y);
+        this._reveal(x, y);
         this.updateState();
-        return c;
+        return this;
     }
 
     toggleFlag(x:number, y:number) {
         let i = this.cellIndex(x, y);
         let c = this.cells[i];
         if (c & Cell.REVEALED) {
-            return c; // you can't flag something that is revealed
+            return this; // you can't flag something that is revealed
         }
         c ^= Cell.FLAGGED;
         this.cells[i] = c;
         this.updateState();
-        return c;
+        return this;
     }
 
     private updateState() {

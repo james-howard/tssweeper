@@ -70,30 +70,29 @@ class CellUI extends React.PureComponent<CellUIProps> {
     }
 }
 
-interface GameUIState {
+type CellUIAction = (x:number, y:number) => void;
+interface GameUIProps {
      board: Game.Board;
+     onReinitialize: (width:number, height:number, mineCount:number) => void;
+     onToggleFlag: CellUIAction;
+     onReveal: CellUIAction;
 }
 
-class GameUI extends React.Component<{}, GameUIState> {
-    constructor(props:{}) {
+class GameUI extends React.Component<GameUIProps> {
+    constructor(props:GameUIProps) {
         super(props);
-        this.state = {
-            board: new Game.Board(5, 6, 5),
-        };
     }
 
     render() {
         let cellElements:React.ComponentElement<CellUIProps, CellUI>[] = [];
-        let board = this.state.board;
+        let board = this.props.board;
         for (let y = 0; y < board.height; y++) {
             for (let x = 0; x < board.width; x++) {
                 let onFlag = () => {
-                    this.state.board.toggleFlag(x, y);
-                    this.forceUpdate();
+                    this.props.onToggleFlag(x, y);
                 };
                 let onReveal = () => {
-                    this.state.board.reveal(x, y);
-                    this.forceUpdate();
+                    this.props.onReveal(x, y);
                 };
                 let cell = h(CellUI, { 
                     cell:board.cellAt(x, y),
