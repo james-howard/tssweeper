@@ -3,6 +3,8 @@ import {createElement as h } from 'react';
 
 import { GameState } from '../Game';
 
+import './StatusButton.css';
+
 interface StatusButtonProps {
     gameState: GameState;
     mouseDown: boolean;
@@ -26,7 +28,7 @@ class StatusButton extends React.PureComponent<StatusButtonProps> {
                 content = '😶';
                 break;
         }
-        return h('button', {onClick:this.props.onReinitialize}, content);
+        return h('button', {onClick:this.props.onReinitialize, className:'StatusButton'}, content);
     }
 }
 

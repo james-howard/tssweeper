@@ -17,7 +17,13 @@ interface StatusUIProps {
 
 class StatusUI extends React.PureComponent<StatusUIProps> {
     render() {
-        return h('div', {},
+        let containerStyle:React.CSSProperties = {
+            display: 'flex',
+            justifyContent: 'space-between',
+            backgroundColor: '#BDBDBD'
+        };
+
+        return h('div', {style:containerStyle},
             h(StatusCounter, {value:this.props.minesRemaining}),
             
             h(StatusButton, {

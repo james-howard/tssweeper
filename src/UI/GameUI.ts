@@ -32,7 +32,11 @@ class GameUI extends React.Component<GameUIProps> {
             onToggleFlag: this.props.onToggleFlag,
             onReveal: this.props.onReveal
         };
-        return h('div', {},
+        let containerStyle:React.CSSProperties = {
+            width: BoardUI.pixelWidthFromBoardWidth(board.width) + 'px',
+            border: '1px solid #333'
+        };
+        return h('div', {style:containerStyle},
             h(StatusUI, statusProps),
             h(BoardUI, boardProps)
         );

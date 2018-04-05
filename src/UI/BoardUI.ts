@@ -13,6 +13,10 @@ interface BoardUIProps {
 }
 
 class BoardUI extends React.PureComponent<BoardUIProps> {
+    static pixelWidthFromBoardWidth(boardWidth:number) {
+        return CellUI.CellSize * boardWidth;
+    }
+
     render() {
         let cellElements:React.ComponentElement<CellUIProps, CellUI>[] = [];
         let board = this.props.board;
