@@ -31,3 +31,11 @@ A debug web server will start running on localhost:3000 and your default browser
 ```shell
 npm test
 ```
+
+## Architectural Notes
+
+The core game logic is implemented in `Game.ts`. This models the state of the board as well as providing methods to mutate the board according to player actions.
+
+A redux interface to the game logic is provided in `Store.ts`. To the extent possible within the redux API, type safety of actions is preserved via dedicated `GameEvent` subclasses which are used to dispatch all redux actions. Additionally, some metadata about the game (start time, duration until win or loss) is also maintained in the redux store.
+
+All UI components are contained within the `UI/` directory. Each square on the minesweeper board is described by a `CellUI` component, a `BoardUI` component contains those cells in a grid layout, which is in turn contained within a `GameUI` component along with a `StatusUI` for showing the game state and a `BoardSizeUI` for choosing the game size / difficulty.
