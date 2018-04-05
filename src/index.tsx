@@ -10,7 +10,7 @@ import GameUI from './UI';
 let GameContainer = ReactRedux.connect(
   /* state => props */
   (state:Store.GameStore) => { 
-      return { board: state.board }; 
+      return state;
   },
   /* dispatch => props */
   (dispatch:Redux.Dispatch<Store.GameEvent>) => {

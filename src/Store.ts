@@ -6,6 +6,8 @@ import * as Game from './Game';
 
 interface GameStore {
     board: Game.Board;
+    start: number;
+    duration: number;
 }
 
 /* 
@@ -57,18 +59,34 @@ function gameReducer(state:GameStore, rawEvent:GameEvent): GameStore {
     switch (rawEvent.type) {
         case InitializeEvent.Type: {
             let event = rawEvent as InitializeEvent;
-            return { board: new Game.Board(event.width, event.height, event.mineCount) };
+            return { 
+                board: new Game.Board(event.width, event.height, event.mineCount), 
+                start: 0, 
+                duration: 0 
+            };
         }
         case ToggleFlagEvent.Type: {
             let event = rawEvent as ToggleFlagEvent;
-            return Object.assign({}, state, { board: state.board.clone().toggleFlag(event.x, event.y) });
+            return Object.assign({}, state, { 
+                board: state.board.clone().toggleFlag(event.x, event.y) 
+            });
         }
         case RevealEvent.Type: {
             let event = rawEvent as RevealEvent;
-            return Object.assign({}, state, { board: state.board.clone().reveal(event.x, event.y) });
+            let nextBoard = state.board.clone().reveal(event.x, event.y);
+            let nextStart = state.start || performance.now();
+            let nextDuration = state.duration || 
+                nextBoard.state === Game.GameState.LOST ?
+                    performance.now() - nextStart :
+                    0;
+            return Object.assign({}, state, { 
+                board: nextBoard, 
+                start: nextStart,
+                duration: nextDuration
+            });
         }
         default:
-            return { board: new Game.Board(10, 10, 10) };
+            return { board: new Game.Board(10, 10, 10), start: 0, duration: 0 };
     }
 }
 
