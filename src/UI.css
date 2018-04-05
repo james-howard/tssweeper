@@ -1,0 +1,26 @@
+.Grid {
+    user-select: none;
+}
+
+.Cell {
+    border: 0px;
+    padding: 0px;
+    margin: 0px;
+}
+
+.CellUnrevealed {
+    border-left: 2px solid white;
+    border-right: 2px solid #7B7B7B;
+    border-top: 2px solid white;
+    border-bottom: 2px solid #7B7B7B;
+}
+
+.CellUnrevealed:active {
+    background-color: #BDBDBD;
+    border: 0px;
+}
+
+.CellRevealed {
+    background-color: #BDBDBD;
+    border: 0.5px solid #7B7B7B;
+}

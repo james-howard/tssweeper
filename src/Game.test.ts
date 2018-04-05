@@ -54,7 +54,7 @@ it('wins 3x3 game via flag', () => {
         "   "
     ]);
     expect(b.state).toBe(Game.GameState.IN_PROGRESS);
-    let c = b.flag(1, 1);
+    let c = b.toggleFlag(1, 1);
     expect((c & Game.Cell.FLAGGED) !== 0).toBe(true);
     expect(b.state).toBe(Game.GameState.WON);
 });

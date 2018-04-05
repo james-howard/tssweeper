@@ -17,6 +17,18 @@ enum Cell {
     REVEALED = 1 << 11
 }
 
+function AdjacentMineCount(cell:Cell) {
+    // returns the number of adjacent mines to the cell or 9 if cell is a mine
+    // log2 implementation specialized to our usage ...
+    // it's equivalent to Math.log2(c & 0xF)
+    for (var p = 0; p <= 9; p++) {
+        if (cell & (1 << p)) {
+            return p;
+        }
+    }
+    throw new Error("Corrupt cell state");
+}
+
 enum GameState {
     IN_PROGRESS,
     LOST, // a mine exploded
@@ -116,16 +128,7 @@ class Board {
     }
 
     adjacentMineCount(x:number, y:number): number {
-        // returns the number of adjacent mines to the cell at x, y, or 9 if cell is a mine
-        let c = this.cellAt(x, y);
-        // log2 implementation specialized to our usage ...
-        // it's equivalent to Math.log2(c & 0xF)
-        for (var p = 0; p <= 9; p++) {
-            if (c & (1 << p)) {
-                return p;
-            }
-        }
-        throw new Error("Corrupt board state");
+        return AdjacentMineCount(this.cellAt(x, y));
     }
 
     private _reveal(x:number, y:number) {
@@ -155,13 +158,13 @@ class Board {
         return c;
     }
 
-    flag(x:number, y:number) {
+    toggleFlag(x:number, y:number) {
         let i = this.cellIndex(x, y);
         let c = this.cells[i];
         if (c & Cell.REVEALED) {
             return c; // you can't flag something that is revealed
         }
-        c |= Cell.FLAGGED;
+        c ^= Cell.FLAGGED;
         this.cells[i] = c;
         this.updateState();
         return c;
@@ -208,4 +211,4 @@ class Board {
     }
 }
 
-export { Board, GameState, Cell };
+export { Board, GameState, Cell, AdjacentMineCount };
