@@ -5,7 +5,7 @@ import * as Redux from 'redux';
 import * as ReactRedux from 'react-redux';
 
 import * as Store from './Store';
-import GameUI from './UI';
+import GameUI from './UI/GameUI';
 
 let GameContainer = ReactRedux.connect(
   /* state => props */
