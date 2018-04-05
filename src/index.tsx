@@ -7,6 +7,8 @@ import * as ReactRedux from 'react-redux';
 import * as Store from './Store';
 import GameUI from './UI/GameUI';
 
+import './index.css';
+
 let GameContainer = ReactRedux.connect(
   /* state => props */
   (state:Store.GameStore) => { 

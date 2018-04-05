@@ -4,10 +4,12 @@
     border-right: 2px solid #7B7B7B;
     border-top: 2px solid white;
     border-bottom: 2px solid #7B7B7B;
+    background-color: #C0C0C0;
     width: 25px;
     height: 25px;
     font-size: 13px;
     padding: 0px;
+    text-align: center;
 }
 
 .StatusButton:active {
